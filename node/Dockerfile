@@ -6,6 +6,11 @@ COPY . .
 
 RUN npm i
 
-EXPOSE 3000
+ENV DOCKERIZE_VERSION v0.7.0
 
-CMD [ "node", "index.js" ]
+RUN apk update \
+    && apk add wget \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apk del wget && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 3000

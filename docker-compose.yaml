@@ -6,9 +6,14 @@ services:
     build:
       context: ./node
     container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 40s node index.js
+    restart: always
     tty: true
     networks:
       - app-network
+    volumes:
+      - ./node:/app
+      - /app/node_modules
     depends_on:
       - db
 
